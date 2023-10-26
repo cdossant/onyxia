@@ -1,9 +1,10 @@
 import type { Translations } from "../types";
+import { COUNTRY_LANG } from "core/ports/OnyxiaApi/Language";
 import MuiLink from "@mui/material/Link";
 import { Markdown } from "onyxia-ui/Markdown";
 import { elementsToSentence } from "ui/tools/elementsToSentence";
 
-export const translations: Translations<"it"> = {
+export const translations: Translations<COUNTRY_LANG.ITALY> = {
     /* spell-checker: disable */
     "Account": {
         "infos": "Informazioni dell'account",
@@ -616,4 +617,67 @@ Sentiti libero di esplorare e prendere il controllo dei tuoi deployment Kubernet
         "ok": "ok"
     }
     /* spell-checker: enable */
+};
+
+export const momentTranslations = {
+    "INSTANTLY": {
+        "past1": "proprio ora",
+        "pastN": "proprio ora",
+        "future1": "proprio ora",
+        "futureN": "proprio ora"
+    },
+    "IN_SECOND": {
+        "past1": "un secondo fa",
+        "pastN": "# secondi fa",
+        "future1": "fra un secondo",
+        "futureN": "fra # secondi"
+    },
+    "IN_MINUTE": {
+        "past1": "un minuto fa",
+        "pastN": "# minuti fa",
+        "future1": "fra un minuto",
+        "futureN": "fra # minuti"
+    },
+    "IN_HOUR": {
+        "past1": "un'ora fa",
+        "pastN": "# ore fa",
+        "future1": "fra un'ora",
+        "futureN": "fra # ore"
+    },
+    "IN_DAY": {
+        "past1": "ieri",
+        "pastN": "# giorni fa",
+        "future1": "domani",
+        "futureN": "fra # giorni"
+    },
+    "IN_WEEK": {
+        "past1": "la settimana scorsa",
+        "pastN": "fra # settimane",
+        "future1": "fra una settimana",
+        "futureN": "fra # settimane"
+    },
+    "IN_MONTH": {
+        "past1": "il mese scorso",
+        "pastN": "fra # mesi",
+        "future1": "fra un mese",
+        "futureN": "fra # mesi"
+    },
+    "IN_YEAR": {
+        "past1": "l'anno scorso",
+        "pastN": "fra # anni",
+        "future1": "fra un anno",
+        "futureN": "fra # anni"
+    },
+    "IN_CENTUARY": {
+        "past1": "il secolo scorso",
+        "pastN": "fra # secoli",
+        "future1": "fra un secolo",
+        "futureN": "fra # secoli"
+    },
+    "IN_MILLENIUM": {
+        "past1": "l'ultimo millennio",
+        "pastN": "fra # millenni",
+        "future1": "fra un millennio",
+        "futureN": "fra # millenni"
+    }
 };

@@ -1,9 +1,10 @@
+import type { Translations } from "../types";
+import { COUNTRY_LANG } from "core/ports/OnyxiaApi/Language";
 import MuiLink from "@mui/material/Link";
 import { Markdown } from "onyxia-ui/Markdown";
-import type { Translations } from "../types";
 import { elementsToSentence } from "ui/tools/elementsToSentence";
 
-export const translations: Translations<"en"> = {
+export const translations: Translations<COUNTRY_LANG.ENGLAND> = {
     "Account": {
         "infos": "Account infos",
         "third-party-integration": "external services",
@@ -607,5 +608,68 @@ Feel free to explore and take charge of your Kubernetes deployments!
     },
     "CommandBar": {
         "ok": "Ok"
+    }
+};
+
+export const momentTranslations = {
+    "INSTANTLY": {
+        "past1": "just now",
+        "pastN": "just now",
+        "future1": "just now",
+        "futureN": "just now"
+    },
+    "IN_SECOND": {
+        "past1": "a second ago",
+        "pastN": "# seconds ago",
+        "future1": "in a second",
+        "futureN": "in # seconds"
+    },
+    "IN_MINUTE": {
+        "past1": "a minute ago",
+        "pastN": "# minutes ago",
+        "future1": "in a minute",
+        "futureN": "in # minutes"
+    },
+    "IN_HOUR": {
+        "past1": "an hour ago",
+        "pastN": "# hours ago",
+        "future1": "in an hour",
+        "futureN": "in # hours"
+    },
+    "IN_DAY": {
+        "past1": "yesterday",
+        "pastN": "# days ago",
+        "future1": "tomorrow",
+        "futureN": "in # days"
+    },
+    "IN_WEEK": {
+        "past1": "last week",
+        "pastN": "# weeks ago",
+        "future1": "in a week",
+        "futureN": "in # weeks"
+    },
+    "IN_MONTH": {
+        "past1": "last month",
+        "pastN": "# months ago",
+        "future1": "in a month",
+        "futureN": "in # months"
+    },
+    "IN_YEAR": {
+        "past1": "last year",
+        "pastN": "# years ago",
+        "future1": "in a year",
+        "futureN": "in # years"
+    },
+    "IN_CENTUARY": {
+        "past1": "last century",
+        "pastN": "# centuries ago",
+        "future1": "in a century",
+        "futureN": "in # centuries"
+    },
+    "IN_MILLENIUM": {
+        "past1": "last millennium",
+        "pastN": "# millennia ago",
+        "future1": "in a millennium",
+        "futureN": "in # millennia"
     }
 };

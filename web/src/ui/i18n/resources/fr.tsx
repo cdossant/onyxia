@@ -1,9 +1,10 @@
 import type { Translations } from "../types";
+import { COUNTRY_LANG } from "core/ports/OnyxiaApi/Language";
 import MuiLink from "@mui/material/Link";
 import { Markdown } from "onyxia-ui/Markdown";
 import { elementsToSentence } from "ui/tools/elementsToSentence";
 
-export const translations: Translations<"fr"> = {
+export const translations: Translations<COUNTRY_LANG.FRANCE> = {
     /* spell-checker: disable */
     "Account": {
         "infos": "Information du compte",
@@ -626,4 +627,67 @@ N'hésitez pas à explorer et à prendre en main vos déploiements Kubernetes !
         "ok": "ok"
     }
     /* spell-checker: enable */
+};
+
+export const momentTranslations = {
+    "INSTANTLY": {
+        "past1": "il y a quelques instants",
+        "pastN": "il y a quelques instants",
+        "future1": "il y a quelques instants",
+        "futureN": "il y a quelques instants"
+    },
+    "IN_SECOND": {
+        "past1": "il y a une seconde",
+        "pastN": "il y a # secondes",
+        "future1": "dans une seconde",
+        "futureN": "dans # secondes"
+    },
+    "IN_MINUTE": {
+        "past1": "il y a une minute",
+        "pastN": "il y a # minutes",
+        "future1": "dans une minute",
+        "futureN": "dans # minutes"
+    },
+    "IN_HOUR": {
+        "past1": "il y a une heure",
+        "pastN": "il y a # heures",
+        "future1": "dans une heure",
+        "futureN": "dans # heures"
+    },
+    "IN_DAY": {
+        "past1": "hier",
+        "pastN": "il y a # jours",
+        "future1": "demain",
+        "futureN": "dans # jours"
+    },
+    "IN_WEEK": {
+        "past1": "la semaine dernière",
+        "pastN": "il y a # semaines",
+        "future1": "dans une semaine",
+        "futureN": "dans # semaines"
+    },
+    "IN_MONTH": {
+        "past1": "le mois dernier",
+        "pastN": "il y a # mois",
+        "future1": "dans un mois",
+        "futureN": "dans # mois"
+    },
+    "IN_YEAR": {
+        "past1": "l'année dernière",
+        "pastN": "il y a # ans",
+        "future1": "dans un ans",
+        "futureN": "dans # ans"
+    },
+    "IN_CENTUARY": {
+        "past1": "le siècle dernier",
+        "pastN": "il y a # siècle",
+        "future1": "dans un siècle",
+        "futureN": "dans # siècle"
+    },
+    "IN_MILLENIUM": {
+        "past1": "au cour du millénaire",
+        "pastN": "Il y a # millénaires",
+        "future1": "dans un millénaire",
+        "futureN": "dans # millétaire"
+    }
 };

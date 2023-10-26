@@ -1,9 +1,10 @@
 import type { Translations } from "../types";
+import { COUNTRY_LANG } from "core/ports/OnyxiaApi/Language";
 import MuiLink from "@mui/material/Link";
 import { Markdown } from "onyxia-ui/Markdown";
 import { elementsToSentence } from "ui/tools/elementsToSentence";
 
-export const translations: Translations<"nl"> = {
+export const translations: Translations<COUNTRY_LANG.NEITHERLAND> = {
     /* spell-checker: disable */
     "Account": {
         "infos": "Accountgegevens",
@@ -620,4 +621,67 @@ Voel je vrij om te verkennen en de controle over je Kubernetes-implementaties te
         "ok": "ok"
     }
     /* spell-checker: enable */
+};
+
+export const momentTranslations = {
+    "INSTANTLY": {
+        "past1": "zojuist",
+        "pastN": "zojuist",
+        "future1": "zojuist",
+        "futureN": "zojuist"
+    },
+    "IN_SECOND": {
+        "past1": "een seconde geleden",
+        "pastN": "# seconden geleden",
+        "future1": "over een seconde",
+        "futureN": "over # seconden"
+    },
+    "IN_MINUTE": {
+        "past1": "een minuut geleden",
+        "pastN": "# minuten geleden",
+        "future1": "over een minuut",
+        "futureN": "over # minuten"
+    },
+    "IN_HOUR": {
+        "past1": "een uur geleden",
+        "pastN": "# uur geleden",
+        "future1": "over een uur",
+        "futureN": "over # uur"
+    },
+    "IN_DAY": {
+        "past1": "gisteren",
+        "pastN": "# dagen geleden",
+        "future1": "morgen",
+        "futureN": "over # dagen"
+    },
+    "IN_WEEK": {
+        "past1": "vorige week",
+        "pastN": "# weken geleden",
+        "future1": "over een week",
+        "futureN": "over # weken"
+    },
+    "IN_MONTH": {
+        "past1": "vorige maand",
+        "pastN": "# maanden geleden",
+        "future1": "over een maand",
+        "futureN": "over # maanden"
+    },
+    "IN_YEAR": {
+        "past1": "vorig jaar",
+        "pastN": "# jaar geleden",
+        "future1": "over een jaar",
+        "futureN": "over # jaar"
+    },
+    "IN_CENTUARY": {
+        "past1": "vorige eeuw",
+        "pastN": "# eeuwen geleden",
+        "future1": "over een eeuw",
+        "futureN": "over # eeuwen"
+    },
+    "IN_MILLENIUM": {
+        "past1": "letztes Jahrhundert",
+        "pastN": "vor # Jahrhunderten",
+        "future1": "in einem Jahrhundert",
+        "futureN": "in # Jahrhunderten"
+    }
 };

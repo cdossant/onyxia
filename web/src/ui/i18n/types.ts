@@ -1,13 +1,13 @@
 import type { GenericTranslations } from "i18nifty";
 import type { Language } from "core";
 import { languages } from "./z";
-
+import { COUNTRY_LANG } from "core/ports/OnyxiaApi/Language";
 export type { Language };
 export { languages };
 
 //If the user's browser language doesn't match any
 //of the languages above specify the language to fallback to:
-export const fallbackLanguage = "en";
+export const fallbackLanguage = COUNTRY_LANG.ENGLAND;
 
 export type ComponentKey =
     | typeof import("ui/pages/mySecrets/MySecrets").i18n

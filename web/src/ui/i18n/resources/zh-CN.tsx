@@ -1,9 +1,10 @@
 import type { Translations } from "../types";
+import { COUNTRY_LANG } from "core/ports/OnyxiaApi/Language";
 import MuiLink from "@mui/material/Link";
 import { Markdown } from "onyxia-ui/Markdown";
 import { elementsToSentence } from "ui/tools/elementsToSentence";
 
-export const translations: Translations<"zh-CN"> = {
+export const translations: Translations<COUNTRY_LANG.CHINA> = {
     /* spell-checker: disable */
     "Account": {
         "infos": "账号信息",
@@ -576,4 +577,67 @@ ${
         "ok": "是"
     }
     /* spell-checker: enable */
+};
+
+export const momentTranslations = {
+    "INSTANTLY": {
+        "past1": "几分钟前",
+        "pastN": "几分钟前",
+        "future1": "几分钟前",
+        "futureN": "几分钟前"
+    },
+    "IN_SECOND": {
+        "past1": "在一秒钟前",
+        "pastN": "在 # 秒前",
+        "future1": "在一秒钟后",
+        "futureN": "在 # 秒后"
+    },
+    "IN_MINUTE": {
+        "past1": "在一分钟前",
+        "pastN": "在 # 分钟前",
+        "future1": "在几分钟后",
+        "futureN": "在 # 分钟后"
+    },
+    "IN_HOUR": {
+        "past1": "在一小时前",
+        "pastN": "在 # 小时前",
+        "future1": "在一小时后",
+        "futureN": "在 # 小时后"
+    },
+    "IN_DAY": {
+        "past1": "昨天",
+        "pastN": "在 # 天前",
+        "future1": "明天",
+        "futureN": "在 # 天后"
+    },
+    "IN_WEEK": {
+        "past1": "在一星期前",
+        "pastN": "在 # 星期前",
+        "future1": "在一星期后",
+        "futureN": "在 # 星期后"
+    },
+    "IN_MONTH": {
+        "past1": "在一个月前",
+        "pastN": "在 # 个月前",
+        "future1": "在一个月后",
+        "futureN": "在 # 个月后"
+    },
+    "IN_YEAR": {
+        "past1": "在去年",
+        "pastN": "在 # 年前",
+        "future1": "在明年",
+        "futureN": "在 # 年后"
+    },
+    "IN_CENTUARY": {
+        "past1": "在上个世纪",
+        "pastN": "在 # 个世纪前",
+        "future1": "在下个世纪",
+        "futureN": "在 # 个世纪后"
+    },
+    "IN_MILLENIUM": {
+        "past1": "在一千年前",
+        "pastN": "在 # 千年前",
+        "future1": "在一千年后",
+        "futureN": "在 # 千年后"
+    }
 };

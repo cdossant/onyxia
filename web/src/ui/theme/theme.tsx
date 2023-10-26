@@ -24,6 +24,7 @@ import { componentByIconId, type IconId } from "./icons";
 import { objectEntries } from "tsafe/objectEntries";
 import { objectFromEntries } from "tsafe/objectFromEntries";
 import { getEnabledLanguages } from "ui/env";
+import { COUNTRY_LANG, Languages } from "core/ports/OnyxiaApi/Language";
 
 const palette = {
     ...(() => {
@@ -117,14 +118,14 @@ export const { LanguageSelect } = createLanguageSelect<Language>({
     "languagesPrettyPrint": objectFromEntries(
         objectEntries({
             /* spell-checker: disable */
-            "en": "English",
-            "fr": "Français",
-            "de": "Deutsch",
-            "it": "Italiano",
-            "nl": "Nederlands",
-            "no": "Norsk",
-            "fi": "Suomi",
-            "zh-CN": "简体中文"
+            [COUNTRY_LANG.ENGLAND]: Languages[COUNTRY_LANG.ENGLAND].label,
+            [COUNTRY_LANG.FRANCE]: Languages[COUNTRY_LANG.FRANCE].label,
+            [COUNTRY_LANG.GERMANY]: Languages[COUNTRY_LANG.GERMANY].label,
+            [COUNTRY_LANG.ITALY]: Languages[COUNTRY_LANG.ITALY].label,
+            [COUNTRY_LANG.NEITHERLAND]: Languages[COUNTRY_LANG.NEITHERLAND].label,
+            [COUNTRY_LANG.NORWAY]: Languages[COUNTRY_LANG.NORWAY].label,
+            [COUNTRY_LANG.FINLAND]: Languages[COUNTRY_LANG.FINLAND].label,
+            [COUNTRY_LANG.CHINA]: Languages[COUNTRY_LANG.CHINA].label
             /* spell-checker: enable */
         }).filter(([language]) => getEnabledLanguages().includes(language))
     )

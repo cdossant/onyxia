@@ -1,9 +1,10 @@
-import MuiLink from "@mui/material/Link";
 import type { Translations } from "../types";
+import { COUNTRY_LANG } from "core/ports/OnyxiaApi/Language";
+import MuiLink from "@mui/material/Link";
 import { Markdown } from "onyxia-ui/Markdown";
 import { elementsToSentence } from "ui/tools/elementsToSentence";
 
-export const translations: Translations<"fi"> = {
+export const translations: Translations<COUNTRY_LANG.FINLAND> = {
     "Account": {
         "infos": "Tilin tiedot",
         "third-party-integration": "Kolmannen osapuolen integraatio",
@@ -604,5 +605,68 @@ Tutustu vapaasti ja ota hallintaan Kubernetes-julkaisusi!
     },
     "CommandBar": {
         "ok": "ok"
+    }
+};
+
+export const momentTranslations = {
+    "INSTANTLY": {
+        "past1": "juuri nyt",
+        "pastN": "juuri nyt",
+        "future1": "juuri nyt",
+        "futureN": "juuri nyt"
+    },
+    "IN_SECOND": {
+        "past1": "sekunti sitten",
+        "pastN": "# sekuntia sitten",
+        "future1": "sekunnin kuluttua",
+        "futureN": "# sekunnin kuluttua"
+    },
+    "IN_MINUTE": {
+        "past1": "minuutti sitten",
+        "pastN": "# minuuttia sitten",
+        "future1": "minuutin kuluttua",
+        "futureN": "# minuutin kuluttua"
+    },
+    "IN_HOUR": {
+        "past1": "tunti sitten",
+        "pastN": "# tuntia sitten",
+        "future1": "tunnin kuluttua",
+        "futureN": "# tunnin kuluttua"
+    },
+    "IN_DAY": {
+        "past1": "eilen",
+        "pastN": "for # päivää sitten",
+        "future1": "huomenna",
+        "futureN": "# päivän päästä"
+    },
+    "IN_WEEK": {
+        "past1": "viime viikolla",
+        "pastN": "for # viikkoa sitten",
+        "future1": "viikon kuluttua",
+        "futureN": "om # viikkoa"
+    },
+    "IN_MONTH": {
+        "past1": "viime kuussa",
+        "pastN": "for # kuukautta sitten",
+        "future1": "kuukauden kuluttua",
+        "futureN": "om # kuukautta"
+    },
+    "IN_YEAR": {
+        "past1": "viime vuonna",
+        "pastN": "for # vuotta sitten",
+        "future1": "vuoden kuluttua",
+        "futureN": "om # vuotta"
+    },
+    "IN_CENTUARY": {
+        "past1": "viime vuosisadalla",
+        "pastN": "for # vuosisataa sitten",
+        "future1": "vuosisadan kuluttua",
+        "futureN": "om # vuosisataa"
+    },
+    "IN_MILLENIUM": {
+        "past1": "viime vuosituhanneksella",
+        "pastN": "for # vuosituhatta sitten",
+        "future1": "vuosituhannen kuluttua",
+        "futureN": "om # vuosituhatta"
     }
 };

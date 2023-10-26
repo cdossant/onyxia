@@ -1,9 +1,10 @@
-import MuiLink from "@mui/material/Link";
 import type { Translations } from "../types";
+import { COUNTRY_LANG } from "core/ports/OnyxiaApi/Language";
+import MuiLink from "@mui/material/Link";
 import { Markdown } from "onyxia-ui/Markdown";
 import { elementsToSentence } from "ui/tools/elementsToSentence";
 
-export const translations: Translations<"no"> = {
+export const translations: Translations<COUNTRY_LANG.NORWAY> = {
     "Account": {
         "infos": "Kontoinformasjon",
         "third-party-integration": "Eksterne tjenester",
@@ -610,5 +611,68 @@ Føl deg fri til å utforske og ta kontroll over dine Kubernetes-implementeringe
     },
     "CommandBar": {
         "ok": "ok"
+    }
+};
+
+export const momentTranslations = {
+    "INSTANTLY": {
+        "past1": "akkurat nå",
+        "pastN": "akkurat nå",
+        "future1": "akkurat nå",
+        "futureN": "akkurat nå"
+    },
+    "IN_SECOND": {
+        "past1": "for et sekund siden",
+        "pastN": "for # sekunder siden",
+        "future1": "om et sekund",
+        "futureN": "om # sekunder"
+    },
+    "IN_MINUTE": {
+        "past1": "for et minutt siden",
+        "pastN": "for # minutter siden",
+        "future1": "om et minutt",
+        "futureN": "om # minutter"
+    },
+    "IN_HOUR": {
+        "past1": "for en time siden",
+        "pastN": "for # timer siden",
+        "future1": "om en time",
+        "futureN": "om # timer"
+    },
+    "IN_DAY": {
+        "past1": "i går",
+        "pastN": "for # dager siden",
+        "future1": "i morgen",
+        "futureN": "om # dager"
+    },
+    "IN_WEEK": {
+        "past1": "forrige uke",
+        "pastN": "for # uker siden",
+        "future1": "om en uke",
+        "futureN": "om # uker"
+    },
+    "IN_MONTH": {
+        "past1": "forrige måned",
+        "pastN": "for # måneder siden",
+        "future1": "om en måned",
+        "futureN": "om # måneder"
+    },
+    "IN_YEAR": {
+        "past1": "i fjor",
+        "pastN": "for # år siden",
+        "future1": "om et år",
+        "futureN": "om # år"
+    },
+    "IN_CENTUARY": {
+        "past1": "forrige århundre",
+        "pastN": "for # århundrer siden",
+        "future1": "om et århundre",
+        "futureN": "om # århundrer"
+    },
+    "IN_MILLENIUM": {
+        "past1": "forrige årtusen",
+        "pastN": "for # årtusener siden",
+        "future1": "om et årtusen",
+        "futureN": "om # årtusener"
     }
 };

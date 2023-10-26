@@ -11,6 +11,7 @@ import "onyxia-ui/assets/fonts/WorkSans/font.css";
 import { GlobalStyles } from "tss-react";
 import { createCoreProvider } from "core";
 import { RouteProvider } from "ui/routes";
+import { COUNTRY_LANG } from "core/ports/OnyxiaApi/Language";
 import { useLang, fallbackLanguage, languages } from "ui/i18n";
 import type { Language } from "ui/i18n";
 import type { ReactNode } from "react";
@@ -24,7 +25,7 @@ const propsByTitle = new Map<string, any>();
 
 const { CoreProvider } = createCoreProvider({
     "apiUrl": "",
-    "getCurrentLang": () => "en",
+    "getCurrentLang": () => COUNTRY_LANG.ENGLAND,
     "transformUrlBeforeRedirectToLogin": url => url,
     "disablePersonalInfosInjectionInGroup": false,
     "isCommandBarEnabledByDefault": true
