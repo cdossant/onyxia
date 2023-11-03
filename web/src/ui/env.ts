@@ -166,24 +166,28 @@ export const getDisableCommandBar = memoize((): boolean => {
 });
 
 export const getEnabledLanguages = memoize((): readonly Language[] => {
-    const { ENABLED_LANGUAGES } = getEnv();
+    try {
+        const { ENABLED_LANGUAGES } = getEnv();
 
-    if (ENABLED_LANGUAGES === "") {
-        return languages;
+        if (ENABLED_LANGUAGES === "") {
+            return languages;
+        }
+
+        return ENABLED_LANGUAGES.split(",")
+            .map(part => part.trim())
+            .reduce(...removeDuplicates<string>())
+            .map(language => {
+                try {
+                    return zLanguage.parse(language);
+                } catch {
+                    throw new Error(
+                        `Language ${language} not supported by Onyxia. Supported languages are ${languages.join(
+                            ", "
+                        )}`
+                    );
+                }
+            });
+    } catch (error) {
+        throw new Error(JSON.stringify(process.env.NODE_ENV) + " " + String(error));
     }
-
-    return ENABLED_LANGUAGES.split(",")
-        .map(part => part.trim())
-        .reduce(...removeDuplicates<string>())
-        .map(language => {
-            try {
-                return zLanguage.parse(language);
-            } catch {
-                throw new Error(
-                    `Language ${language} not supported by Onyxia. Supported languages are ${languages.join(
-                        ", "
-                    )}`
-                );
-            }
-        });
 });
