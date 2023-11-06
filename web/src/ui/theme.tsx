@@ -12,13 +12,15 @@ import { createTss } from "tss-react";
 import {
     THEME_ID,
     PALETTE_OVERRIDE,
-    FAVICON
+    FAVICON,
+    FONT
 } from "keycloak-theme/login/envCarriedOverToKc";
 import { mergeDeep } from "ui/tools/mergeDeep";
 import { AnimatedOnyxiaLogo } from "onyxia-ui/AnimatedOnyxiaLogo";
 import { $lang, resolveLocalizedString } from "ui/i18n";
 import { statefulObservableToStatefulEvt } from "powerhooks/tools/StatefulObservable/statefulObservableToStatefulEvt";
 import { resolveAssetVariantUrl } from "ui/shared/AssetVariantUrl";
+import { assert } from "tsafe/assert";
 import servicesSvgUrl from "ui/assets/svg/custom-icons/services.svg";
 import secretsSvgUrl from "ui/assets/svg/custom-icons/secrets.svg";
 import accountSvgUrl from "ui/assets/svg/custom-icons/account.svg";
@@ -57,17 +59,6 @@ export const palette = {
     }
 };
 
-export const fontFamily = `${(() => {
-    switch (THEME_ID) {
-        case "france":
-            return "Marianne";
-        case "onyxia":
-        case "ultraviolet":
-        case "verdant":
-            return '"Work Sans"';
-    }
-})()}, sans-serif`;
-
 export const targetWindowInnerWidth = 1980;
 
 const { useTheme, ThemeProvider } = createThemeProvider({
@@ -75,9 +66,11 @@ const { useTheme, ThemeProvider } = createThemeProvider({
         ...defaultGetTypographyDesc({
             ...params,
             // We don't want the font to be responsive
+            // By default, the font size change depending on the screen size,
+            // we don't want that here so we fix the windowInnerWidth.
             "windowInnerWidth": targetWindowInnerWidth
         }),
-        fontFamily
+        "fontFamily": `'${FONT.fontFamily}'`
     }),
     palette,
     "splashScreenParams": { "Logo": AnimatedOnyxiaLogo },
@@ -95,7 +88,7 @@ export const { tss } = createTss({
 
 export const useStyles = tss.create({});
 
-export async function applyFaviconColor() {
+export async function loadThemedFavicon() {
     Evt.merge([
         evtIsDarkModeEnabled,
         statefulObservableToStatefulEvt({ "statefulObservable": $lang })
@@ -172,10 +165,9 @@ export async function applyFaviconColor() {
 
             const url = "data:image/svg+xml," + encodeURIComponent(updatedRawSvg);
 
-            const link =
-                document.querySelector("link[rel*='icon']") ??
-                document.createElement("link");
-            Object.assign(link, { "rel": "icon", "type": "image/svg+xml", "href": url });
+            const link = document.querySelector("link[rel*='icon']");
+            assert(link !== null, "Expect a favicon already present in the head");
+            Object.assign(link, { "type": "image/svg+xml", "href": url });
 
             document.getElementsByTagName("head")[0].appendChild(link);
         });
