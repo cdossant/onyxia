@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useTranslation } from "ui/i18n";
-import { tss } from "ui/theme";
+import { tss } from "tss";
 import { PageHeader } from "onyxia-ui/PageHeader";
 import { useCoreState, selectors, useCoreFunctions, useCoreEvts } from "core";
 import { useStateRef } from "powerhooks/useStateRef";
@@ -12,7 +12,7 @@ import type { PageRoute } from "./route";
 import { useSplashScreen } from "onyxia-ui";
 import { useEvt } from "evt/hooks";
 import { routes, getPreviousRouteName } from "ui/routes";
-import { getIsAutoLaunchDisabled } from "ui/env";
+import { env } from "env-parsed";
 import { assert } from "tsafe/assert";
 import { Deferred } from "evt/tools/Deferred";
 import { Evt, type UnpackEvt } from "evt";
@@ -150,7 +150,7 @@ export default function Launcher(props: Props) {
                         }).replace();
 
                         if (
-                            getIsAutoLaunchDisabled() &&
+                            env.DISABLE_AUTO_LAUNCH &&
                             //If auto launch from myServices the user is launching one of his service, it's safe
                             getPreviousRouteName() !== "myServices"
                         ) {

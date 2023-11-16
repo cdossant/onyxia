@@ -1,12 +1,19 @@
-import { FONT } from "./envCarriedOverToKc";
+import { env } from "env-parsed";
 import { assert, type Equals } from "tsafe/assert";
 import { exclude } from "tsafe/exclude";
+import { typeGuard } from "tsafe/typeGuard";
 
-export function injectCustomFontFace(): void {
-    const { fontFamily, dirUrl } = FONT;
+export function injectCustomFontFaceIfNotAlreadyDone(): void {
+    const { fontFamily, dirUrl } = env.FONT;
 
-    if (fontFamily === "Work Sans") {
-        return;
+    {
+        const metaTag = document.querySelector(`meta[name='onyxia-font']`);
+
+        assert(typeGuard<HTMLMetaElement>(metaTag, metaTag !== null));
+
+        if (metaTag.content === fontFamily) {
+            return;
+        }
     }
 
     const styleElement = document.createElement("style");
@@ -14,8 +21,8 @@ export function injectCustomFontFace(): void {
     const fontFaceRules = ([400, 500, 600, 700] as const)
         .map(weight => ({
             weight,
-            "normalFontFileBasename": FONT[weight],
-            "italicFontFileBasename": FONT[`${weight}-italic`]
+            "normalFontFileBasename": env.FONT[weight],
+            "italicFontFileBasename": env.FONT[`${weight}-italic`]
         }))
         .map(({ weight, normalFontFileBasename, italicFontFileBasename }) =>
             (["normal", "italic"] as const)
