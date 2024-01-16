@@ -28,6 +28,7 @@ import onyxiaNeumorphismDarkModeUrl from "ui/assets/svg/OnyxiaNeumorphismDarkMod
 import onyxiaNeumorphismLightModeUrl from "ui/assets/svg/OnyxiaNeumorphismLightMode.svg";
 import { getIsJSON5ObjectOrArray } from "ui/tools/getIsJSON5ObjectOrArray";
 import JSON5 from "json5";
+import { ensureUrlIsSafe } from "ui/shared/ensureUrlIsSafe";
 
 export const { env, injectTransferableEnvsInQueryParams } = createParsedEnvs([
     {
@@ -63,7 +64,7 @@ export const { env, injectTransferableEnvsInQueryParams } = createParsedEnvs([
             try {
                 paletteOverride = JSON5.parse(envValue);
             } catch (err) {
-                throw new Error(`${envName} is not parsable JSON`);
+                throw new Error(`${envName} is not parsable JSON5: ${envValue}`);
             }
 
             assert(
@@ -141,7 +142,20 @@ export const { env, injectTransferableEnvsInQueryParams } = createParsedEnvs([
         "isUsedInKeycloakTheme": true,
         "validateAndParseOrGetDefault": ({ envValue }) => {
             assert(envValue !== "", "Should have default in .env");
-            return envValue;
+
+            function sanitizeTitle(title: string) {
+                // Basic sanitization: remove script tags, encode special characters, etc.
+                return title.replace(/<\/?script[^>]*>/gi, "").replace(
+                    /[<>]/g,
+                    char =>
+                        ({
+                            "<": "&lt;",
+                            ">": "&gt;"
+                        }[char]!)
+                );
+            }
+
+            return sanitizeTitle(envValue);
         }
     },
     {
@@ -156,6 +170,7 @@ export const { env, injectTransferableEnvsInQueryParams } = createParsedEnvs([
             }
 
             if (!getIsJSON5ObjectOrArray(envValue)) {
+                ensureUrlIsSafe(envValue);
                 return envValue;
             }
 
@@ -190,6 +205,10 @@ export const { env, injectTransferableEnvsInQueryParams } = createParsedEnvs([
             if (Object.keys(tosUrlByLng).length === 0) {
                 return undefined;
             }
+
+            Object.values(tosUrlByLng).forEach(url => {
+                ensureUrlIsSafe(url);
+            });
 
             return tosUrlByLng;
         }
@@ -274,6 +293,19 @@ export const { env, injectTransferableEnvsInQueryParams } = createParsedEnvs([
                 );
             }
             assert(is<ParsedValue>(parsedValue));
+
+            parsedValue.fontFamily = parsedValue.fontFamily.replace(
+                /[^a-zA-Z0-9 \-áéíóúÁÉÍÓÚäëïöüÄËÏÖÜ]/g,
+                ""
+            );
+
+            {
+                const { fontFamily, dirUrl, ...rest } = parsedValue;
+
+                Object.values(rest).forEach(fontFileBasename =>
+                    ensureUrlIsSafe(`${dirUrl}/${fontFileBasename}`)
+                );
+            }
 
             return parsedValue;
         }
@@ -1015,6 +1047,23 @@ export const { env, injectTransferableEnvsInQueryParams } = createParsedEnvs([
         "isUsedInKeycloakTheme": false,
         "validateAndParseOrGetDefault": ({ envValue }) =>
             envValue === "" ? undefined : envValue
+    },
+    {
+        "envName": "CUSTOM_RESOURCES_URL",
+        "isUsedInKeycloakTheme": true,
+        "validateAndParseOrGetDefault": ({ envValue }) => {
+            assert(envValue !== "", "Should have default in .env");
+            ensureUrlIsSafe(envValue);
+            return envValue;
+        }
+    },
+    {
+        "envName": "SAMPLE_DATASET_URL",
+        "isUsedInKeycloakTheme": false,
+        "validateAndParseOrGetDefault": ({ envValue }) => {
+            assert(envValue !== "", "Should have default in .env");
+            return envValue;
+        }
     }
 ]);
 
@@ -1042,19 +1091,18 @@ function createParsedEnvs<Parser extends Entry<EnvName>>(
 
     const injectFunctions: ((url: string) => string)[] = [];
 
-    const PUBLIC_URL = (() => {
-        const kcContext = (() => {
-            if (kcLoginThemeContext !== undefined) {
-                return kcLoginThemeContext;
-            }
+    const kcContext = (() => {
+        if (kcLoginThemeContext !== undefined) {
+            return kcLoginThemeContext;
+        }
 
-            return undefined;
-        })();
+        return undefined;
+    })();
 
-        return kcContext === undefined || process.env.NODE_ENV === "development"
+    const PUBLIC_URL =
+        kcContext === undefined || process.env.NODE_ENV === "development"
             ? process.env.PUBLIC_URL
             : `${kcContext.url.resourcesPath}/build`;
-    })();
 
     const env: any = new Proxy(
         {},
@@ -1077,6 +1125,39 @@ function createParsedEnvs<Parser extends Entry<EnvName>>(
         }
     );
 
+    const localStoragePrefix = "onyxiaTheme_";
+
+    local_storage_invalidation_strategy: {
+        if (kcContext === undefined) {
+            break local_storage_invalidation_strategy;
+        }
+
+        const themeVersionLocalStorageKey = `${localStoragePrefix}themeVersion`;
+
+        const localStorageThemeVersion = localStorage.getItem(
+            themeVersionLocalStorageKey
+        );
+
+        if (localStorageThemeVersion === kcContext.themeVersion) {
+            break local_storage_invalidation_strategy;
+        }
+
+        // Remove all keys from localStorage that start with "onyxiaTheme_"
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+
+            if (key === null) {
+                continue;
+            }
+
+            if (key.startsWith(localStoragePrefix)) {
+                localStorage.removeItem(key);
+            }
+        }
+
+        localStorage.setItem(themeVersionLocalStorageKey, kcContext.themeVersion);
+    }
+
     for (const parser of parsers) {
         const { envName, validateAndParseOrGetDefault, isUsedInKeycloakTheme } = parser;
 
@@ -1085,7 +1166,7 @@ function createParsedEnvs<Parser extends Entry<EnvName>>(
         }
 
         const isProductionKeycloak =
-            process.env.NODE_ENV === "production" && kcLoginThemeContext !== undefined;
+            process.env.NODE_ENV === "production" && kcContext !== undefined;
 
         const getEnvValue = () => {
             if (!isUsedInKeycloakTheme && kcLoginThemeContext !== undefined) {
@@ -1094,7 +1175,17 @@ function createParsedEnvs<Parser extends Entry<EnvName>>(
                 );
             }
 
+            const localStorageKey = `${localStoragePrefix}${envName}`;
+
             look_in_url: {
+                if (
+                    kcContext === undefined &&
+                    (getEnv().ALLOW_THEME_TESTING_VIA_URL !== "true" ||
+                        !id<EnvName[]>(["FONT", "PALETTE_OVERRIDE"]).includes(envName))
+                ) {
+                    break look_in_url;
+                }
+
                 const result = retrieveParamFromUrl({
                     "url": window.location.href,
                     "name": envName
@@ -1104,12 +1195,19 @@ function createParsedEnvs<Parser extends Entry<EnvName>>(
                     break look_in_url;
                 }
 
-                const { newUrl, value: envValue } = result;
+                let { newUrl, value: envValue } = result;
 
                 updateSearchBarUrl(newUrl);
 
                 if (isProductionKeycloak) {
-                    localStorage.setItem(envName, envValue);
+                    const kcEnvValue = (kcContext as any).properties[envName] ?? "";
+
+                    if (kcEnvValue !== "") {
+                        localStorage.removeItem(localStorageKey);
+                        envValue = kcEnvValue;
+                    } else {
+                        localStorage.setItem(localStorageKey, envValue);
+                    }
                 }
 
                 return envValue;
@@ -1128,7 +1226,7 @@ function createParsedEnvs<Parser extends Entry<EnvName>>(
                     break restore_from_local_storage;
                 }
 
-                const envValue = localStorage.getItem(envName);
+                const envValue = localStorage.getItem(localStorageKey);
 
                 if (envValue === null) {
                     break restore_from_local_storage;
@@ -1149,9 +1247,19 @@ function createParsedEnvs<Parser extends Entry<EnvName>>(
         if (isUsedInKeycloakTheme) {
             const envValue = getEnvValue();
 
-            injectFunctions.push(
-                url => addParamToUrl({ url, "name": envName, "value": envValue }).newUrl
-            );
+            if (kcContext === undefined) {
+                injectFunctions.push(
+                    url =>
+                        addParamToUrl({
+                            url,
+                            "name": envName,
+                            "value": envValue.replace(
+                                /%PUBLIC_URL%\/custom-resources/g,
+                                `${window.location.origin}${process.env.PUBLIC_URL}/custom-resources`
+                            )
+                        }).newUrl
+                );
+            }
 
             parsedValueOrGetterByEnvName[envName] = validateAndParseOrGetDefault({
                 "envValue": replacePUBLIC_URL(envValue),
@@ -1184,10 +1292,6 @@ function createParsedEnvs<Parser extends Entry<EnvName>>(
     {
 
         let url = "https://datalab.sspcloud.fr";
-        let helmValues = [
-            "web:",
-            "    env:",
-        ].join("\n");
 
         for (const envName of id<EnvName[]>([
             "FONT",
@@ -1207,21 +1311,8 @@ function createParsedEnvs<Parser extends Entry<EnvName>>(
                 continue;
             }
 
-            if (envName === "FONT" || envName === "PALETTE_OVERRIDE") {
-
-
-                helmValues += `\n        ${envName}: |\n            ${JSON.stringify(JSON5.parse(envValue), null, 2).split("\n").join("\n            ")}`;
-            } else {
-
-                helmValues += [
-                    `\n        ${envName}: "${env[envName]}"`,
-                ].join("\n");
-
-            }
 
         }
-
-        console.log(helmValues);
 
         console.log(url);
 

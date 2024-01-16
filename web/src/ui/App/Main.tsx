@@ -5,7 +5,8 @@ import { useSplashScreen } from "onyxia-ui";
 import { keyframes } from "tss-react";
 import { objectKeys } from "tsafe/objectKeys";
 import { pages } from "ui/pages";
-import { useCoreFunctions } from "core";
+import { useCore } from "core";
+import { CircularProgress } from "onyxia-ui/CircularProgress";
 
 type Props = {
     className?: string;
@@ -16,7 +17,7 @@ export const Main = memo((props: Props) => {
 
     const route = useRoute();
 
-    const { userAuthentication } = useCoreFunctions();
+    const { userAuthentication } = useCore().functions;
 
     const { classes } = useStyles();
 
@@ -35,7 +36,11 @@ export const Main = memo((props: Props) => {
                             ) {
                                 /* prettier-ignore */
                                 userAuthentication.login({ "doesCurrentHrefRequiresAuth": true });
-                                return null;
+                                return (
+                                    <div className={classes.loginRedirect}>
+                                        <CircularProgress size={70} />
+                                    </div>
+                                );
                             }
 
                             return (
@@ -76,5 +81,11 @@ const useStyles = tss.create({
                 opacity: 1;
             }
             `} 400ms`
+    },
+    "loginRedirect": {
+        "display": "flex",
+        "justifyContent": "center",
+        "alignItems": "center",
+        "height": "100%"
     }
 });

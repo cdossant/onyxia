@@ -10,7 +10,7 @@ import { assert } from "tsafe/assert";
 import { saveAs } from "file-saver";
 import { smartTrim } from "ui/tools/smartTrim";
 import { useFromNow } from "ui/shared/useMoment";
-import { useCoreFunctions, useCoreState, selectors } from "core";
+import { useCoreState, useCore } from "core";
 import { declareComponentKeys } from "i18nifty";
 import { useConstCallback } from "powerhooks/useConstCallback";
 import Select from "@mui/material/Select";
@@ -32,7 +32,7 @@ const technologies = [
     "R (paws)",
     "Python (s3fs)",
     "Python (boto3)",
-    "shell environnement variables",
+    "shell environment variables",
     "MC client",
     "s3cmd",
     "rclone"
@@ -51,20 +51,18 @@ export const AccountStorageTab = memo((props: Props) => {
 
     const { t } = useTranslation({ AccountStorageTab });
 
-    const { s3Credentials } = useCoreFunctions();
+    const { s3Credentials } = useCore().functions;
 
     useEffect(() => {
         s3Credentials.refresh({ "doForceRenewToken": false });
     }, []);
 
-    const { isReady } = useCoreState(selectors.s3Credentials.isReady);
-    const { credentials } = useCoreState(selectors.s3Credentials.credentials);
-    const { expirationTime } = useCoreState(selectors.s3Credentials.expirationTime);
-    const { initScript } = useCoreState(selectors.s3Credentials.initScript);
-    const { selectedTechnology } = useCoreState(
-        selectors.s3Credentials.selectedTechnology
-    );
-    const { isRefreshing } = useCoreState(selectors.s3Credentials.isRefreshing);
+    const isReady = useCoreState("s3Credentials", "isReady");
+    const credentials = useCoreState("s3Credentials", "credentials");
+    const expirationTime = useCoreState("s3Credentials", "expirationTime");
+    const initScript = useCoreState("s3Credentials", "initScript");
+    const selectedTechnology = useCoreState("s3Credentials", "selectedTechnology");
+    const isRefreshing = useCoreState("s3Credentials", "isRefreshing");
 
     const { fromNowText } = useFromNow({ "dateTime": expirationTime ?? 0 });
 
@@ -150,6 +148,9 @@ export const AccountStorageTab = memo((props: Props) => {
                         </>
                     }
                     onRequestCopy={onFieldRequestCopyFactory(credentials[key])}
+                    isSensitiveInformation={
+                        key === "AWS_SECRET_ACCESS_KEY" || key === "AWS_SESSION_TOKEN"
+                    }
                 />
             ))}
             <Divider className={classes.divider} variant="middle" />

@@ -3,7 +3,7 @@ import { routes } from "ui/routes";
 import { tss, useStyles as useClasslessStyles } from "tss";
 import { Text } from "onyxia-ui/Text";
 import { Button } from "onyxia-ui/Button";
-import { useCoreFunctions } from "core";
+import { useCore } from "core";
 import { useTranslation } from "ui/i18n";
 import { Card as OnyxiaUiCard } from "onyxia-ui/Card";
 import { env } from "env-parsed";
@@ -11,10 +11,10 @@ import { useConst } from "powerhooks/useConst";
 import { declareComponentKeys } from "i18nifty";
 import type { PageRoute } from "./route";
 import { ThemedImage } from "onyxia-ui/ThemedImage";
-import { useResolveThemedAssetUrl } from "onyxia-ui";
 import { LocalizedMarkdown } from "ui/shared/Markdown";
 import { LinkFromConfigButton } from "./LinkFromConfigButton";
 import { id } from "tsafe/id";
+import { useThemedImageUrl } from "onyxia-ui/ThemedImage";
 
 type Props = {
     route: PageRoute;
@@ -30,17 +30,14 @@ export default function Home(props: Props) {
         }
     });
 
-    const { resolveThemedAssetUrl } = useResolveThemedAssetUrl();
+    const backgroundUrl = useThemedImageUrl(env.BACKGROUND_ASSET);
 
     const { classes, cx } = useStyles({
-        "backgroundUrl":
-            env.BACKGROUND_ASSET === undefined
-                ? undefined
-                : resolveThemedAssetUrl(env.BACKGROUND_ASSET),
+        backgroundUrl,
         "hasLogo": env.HOMEPAGE_LOGO !== undefined
     });
 
-    const { userAuthentication, fileExplorer } = useCoreFunctions();
+    const { userAuthentication, fileExplorer } = useCore().functions;
 
     const isUserLoggedIn = userAuthentication.getIsUserLoggedIn();
 
@@ -137,7 +134,7 @@ export default function Home(props: Props) {
         if (env.HOMEPAGE_CARDS === undefined) {
             return id<CardProps["card"][]>([
                 {
-                    "pictogram": `${env.PUBLIC_URL}/pictograms/service.svg`,
+                    "pictogram": `${env.PUBLIC_URL}/pictograms/service.svg?v=2`,
                     "title": t("cardTitle1"),
                     "description": t("cardText1"),
                     "button": {
@@ -146,7 +143,7 @@ export default function Home(props: Props) {
                     }
                 },
                 {
-                    "pictogram": `${env.PUBLIC_URL}/pictograms/community.svg`,
+                    "pictogram": `${env.PUBLIC_URL}/pictograms/community.svg?v=2`,
                     "title": t("cardTitle2"),
                     "description": t("cardText2"),
                     "button": {
@@ -158,7 +155,7 @@ export default function Home(props: Props) {
                     ? []
                     : [
                           {
-                              "pictogram": `${env.PUBLIC_URL}/pictograms/storage.svg`,
+                              "pictogram": `${env.PUBLIC_URL}/pictograms/storage.svg?v=2`,
                               "title": t("cardTitle3"),
                               "description": t("cardText3"),
                               "button": {

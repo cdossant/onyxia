@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation, useResolveLocalizedString } from "ui/i18n";
 import { PageHeader } from "onyxia-ui/PageHeader";
 import { tss } from "tss";
-import { useCoreState, selectors, useCoreEvts, useCoreFunctions } from "core";
+import { useCoreState, useCore } from "core";
 import { useStateRef } from "powerhooks/useStateRef";
 import { declareComponentKeys } from "i18nifty";
 import type { PageRoute } from "./route";
@@ -19,6 +19,8 @@ import { assert } from "tsafe/assert";
 import { useCallbackFactory } from "powerhooks/useCallbackFactory";
 import { CatalogChartCard } from "./CatalogChartCard";
 import { customIcons } from "ui/theme";
+import type { MuiIconComponentName } from "onyxia-ui/MuiIconComponentName";
+import { id } from "tsafe/id";
 
 export type Props = {
     route: PageRoute;
@@ -33,10 +35,11 @@ export default function Catalog(props: Props) {
     const scrollableDivRef = useStateRef<HTMLDivElement>(null);
 
     const { isReady, selectedCatalog, availableCatalogs, filteredCharts } = useCoreState(
-        selectors.catalog.wrap
-    ).wrap;
+        "catalog",
+        "main"
+    );
 
-    const { evtCatalog } = useCoreEvts();
+    const { evtCatalog } = useCore().evts;
 
     useEvt(
         ctx =>
@@ -49,7 +52,7 @@ export default function Catalog(props: Props) {
         [evtCatalog]
     );
 
-    const { catalog } = useCoreFunctions();
+    const { catalog } = useCore().functions;
 
     useEffect(() => {
         catalog.changeSelectedCatalogId({ "catalogId": route.params.catalogId });
@@ -112,7 +115,7 @@ export default function Catalog(props: Props) {
                     "catalogName": resolveLocalizedString(selectedCatalog.name),
                     "repositoryUrl": selectedCatalog.repositoryUrl
                 })}
-                helpIcon="sentimentSatisfied"
+                helpIcon={id<MuiIconComponentName>("SentimentSatisfied")}
                 titleCollapseParams={{
                     "behavior": "collapses on scroll",
                     "scrollTopThreshold": 650,

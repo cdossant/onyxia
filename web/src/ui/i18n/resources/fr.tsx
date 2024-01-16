@@ -314,7 +314,9 @@ export const translations: Translations<"fr"> = {
         "divider: external services features":
             "Fonctionnalités relative aux services externes",
         "divider: onyxia instance specific features":
-            "Fonctionnalités spécifiques à cette instance d'Onyxia"
+            "Fonctionnalités spécifiques à cette instance d'Onyxia",
+        "dataExplorer": "Explorateur de Données",
+        "sqlOlapShell": "Coquille SQL OLAP"
     },
     "Page404": {
         "not found": "Page non trouvée"
@@ -515,8 +517,11 @@ N'hésitez pas à explorer et à prendre en main vos déploiements Kubernetes !
         "friendly name": "Nom personnalisé",
         "launch": "Lancer",
         "cancel": "Annuler",
-        "copy url helper text":
-            "Copier l'URL permettant de restaurer cette configuration",
+        "copy auto launch url": "Copier l'URL de lancement automatique",
+        "copy auto launch url helper": ({
+            chartName
+        }) => `Copier l'URL qui permettra à tout utilisateur de cette instance Onyxia de 
+            lancer un ${chartName} dans cette configuration dans leur namespace`,
         "share the service": "Partager le service",
         "share the service - explain":
             "Rendre accessible le service aux collaborateurs du groupe",
@@ -543,7 +548,8 @@ N'hésitez pas à explorer et à prendre en main vos déploiements Kubernetes !
                 <MuiLink href={catalogRepositoryUrl}>dépôt Helm {catalogName}</MuiLink>
             </>
         ),
-        "save changes": "Enregistrer les modifications"
+        "save changes": "Enregistrer les modifications",
+        "copied to clipboard": "Copié dans le presse-papiers !"
     },
     "LauncherConfigurationCard": {
         "global config": "Configurations globales",
@@ -631,6 +637,32 @@ N'hésitez pas à explorer et à prendre en main vos déploiements Kubernetes !
         "no services running":
             "Vous n'avez actuellement aucun service en cours d'exécution"
     },
+    "DataExplorer": {
+        "page header title": "Explorateur de Données",
+        "page header help title":
+            "Prévisualisez vos fichiers Parquet et CSV directement depuis votre navigateur !",
+        "page header help content": ({ demoParquetFileLink }) => (
+            <>
+                Entrez simplement l'URL <code>https://</code> ou <code>s3://</code> d'un
+                fichier de données pour le prévisualiser.
+                <br />
+                Le fichier n'est pas entièrement téléchargé ; son contenu est diffusé au
+                fur et à mesure que vous naviguez à travers les pages.
+                <br />
+                Vous pouvez partager un permalien vers le fichier ou même vers une ligne
+                spécifique du fichier en copiant l'URL de la barre d'adresse.
+                <br />
+                Vous ne savez pas par où commencer ? Essayez ce{" "}
+                <MuiLink {...demoParquetFileLink}>fichier de démonstration</MuiLink> !
+            </>
+        ),
+        "column": "colonne",
+        "density": "densité",
+        "download file": "télécharger le fichier"
+    },
+    "UrlInput": {
+        "load": "Charger"
+    },
     "CommandBar": {
         "ok": "ok"
     },
@@ -717,6 +749,10 @@ N'hésitez pas à explorer et à prendre en main vos déploiements Kubernetes !
                     return "dans # ans";
             }
         }
+    },
+    "CopyToClipboardIconButton": {
+        "copied to clipboard": "Copié !",
+        "copy to clipboard": "Copier dans le presse-papiers"
     }
     /* spell-checker: enable */
 };

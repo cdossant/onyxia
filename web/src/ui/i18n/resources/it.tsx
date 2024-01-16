@@ -310,7 +310,9 @@ export const translations: Translations<"it"> = {
         "divider: services features": "Funzioni relative ai servizi",
         "divider: external services features": "Funzioni relative ai servizi esterni",
         "divider: onyxia instance specific features":
-            "Funzioni specifiche di questa istanza di Onyxia"
+            "Funzioni specifiche di questa istanza di Onyxia",
+        "dataExplorer": "Esploratore di Dati",
+        "sqlOlapShell": "Guscio SQL OLAP"
     },
     "Page404": {
         "not found": "Pagina non trovata"
@@ -506,7 +508,11 @@ Sentiti libero di esplorare e prendere il controllo dei tuoi deployment Kubernet
         "friendly name": "Nome personalizzato",
         "launch": "Avviare",
         "cancel": "Annullare",
-        "copy url helper text": "Copiare l'URL per ripristinare questa configurazione",
+        "copy auto launch url": "Copia URL di avvio automatico",
+        "copy auto launch url helper": ({
+            chartName
+        }) => `Copia l'URL che consentirà a qualsiasi utente di questa istanza Onyxia di 
+            lanciare un ${chartName} in questa configurazione nel loro namespace`,
         "share the service": "Condividire il servizio",
         "share the service - explain":
             "Rendere il servizio accessibile ai membri del gruppo",
@@ -535,7 +541,8 @@ Sentiti libero di esplorare e prendere il controllo dei tuoi deployment Kubernet
                 </MuiLink>
             </>
         ),
-        "save changes": "Salva modifiche"
+        "save changes": "Salva modifiche",
+        "copied to clipboard": "Copiato negli appunti!"
     },
     "LauncherConfigurationCard": {
         "global config": "Configurazioni globali",
@@ -620,6 +627,32 @@ Sentiti libero di esplorare e prendere il controllo dei tuoi deployment Kubernet
     "NoRunningService": {
         "launch one": "Clicca qui per avviarne uno",
         "no services running": "You don't have any service running"
+    },
+    "DataExplorer": {
+        "page header title": "Esploratore di Dati",
+        "page header help title":
+            "Anteprima dei tuoi file Parquet e CSV direttamente dal tuo browser!",
+        "page header help content": ({ demoParquetFileLink }) => (
+            <>
+                Inserisci semplicemente l'URL <code>https://</code> o <code>s3://</code>{" "}
+                di un file di dati per visualizzarne l'anteprima.
+                <br />
+                Il file non viene scaricato completamente; il suo contenuto viene
+                trasmesso man mano che navighi tra le pagine.
+                <br />
+                Puoi condividere un link permanente al file o anche a una specifica riga
+                del file copiando l'URL dalla barra degli indirizzi.
+                <br />
+                Non sai da dove iniziare? Prova questo{" "}
+                <MuiLink {...demoParquetFileLink}>file dimostrativo</MuiLink>!
+            </>
+        ),
+        "column": "colonna",
+        "density": "densità",
+        "download file": "scarica file"
+    },
+    "UrlInput": {
+        "load": "Carica"
     },
     "CommandBar": {
         "ok": "ok"
@@ -707,6 +740,10 @@ Sentiti libero di esplorare e prendere il controllo dei tuoi deployment Kubernet
                     return "tra # anni";
             }
         }
+    },
+    "CopyToClipboardIconButton": {
+        "copied to clipboard": "Copiato!",
+        "copy to clipboard": "Copia negli appunti"
     }
     /* spell-checker: enable */
 };

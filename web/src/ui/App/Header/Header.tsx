@@ -8,7 +8,7 @@ import { BrandHeaderSection } from "ui/shared/BrandHeaderSection";
 import { routes } from "ui/routes";
 import { ProjectSelect } from "./ProjectSelect";
 import { RegionSelect } from "./RegionSelect";
-import { useCoreFunctions } from "core";
+import { useCore } from "core";
 import { urlToLink } from "ui/routes";
 import { LocalizedMarkdown } from "ui/shared/Markdown";
 
@@ -23,13 +23,16 @@ export function Header(props: Props) {
 
     const { classes, cx } = useStyles();
 
-    const { userAuthentication } = useCoreFunctions();
+    const { userAuthentication } = useCore().functions;
 
     const isUserLoggedIn = userAuthentication.getIsUserLoggedIn();
 
     return (
         <header className={cx(classes.root, className)}>
-            <BrandHeaderSection doShowOnyxia={true} link={routes.home().link} />
+            <BrandHeaderSection
+                doShowOnyxia={!env.HEADER_HIDE_ONYXIA}
+                link={routes.home().link}
+            />
             <RegionSelect className={classes.regionSelect} tRegion={t("region")} />
             <ProjectSelect className={classes.projectSelect} tProject={t("project")} />
             <div className={classes.rightEndActionsContainer}>
@@ -92,7 +95,9 @@ const useStyles = tss.withName({ Header }).create(({ theme }) => ({
         "flex": 1,
         "display": "flex",
         "justifyContent": "flex-end",
-        "alignItems": "center"
+        "alignItems": "center",
+        // For when there's no link
+        "minHeight": 47.6
     },
     "projectSelect": {
         "marginLeft": theme.spacing(4)

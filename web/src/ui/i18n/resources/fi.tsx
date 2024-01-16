@@ -305,7 +305,9 @@ export const translations: Translations<"fi"> = {
         "divider: services features": "Palvelun ominaisuudet",
         "divider: external services features": "Ulkoisten palveluiden ominaisuudet",
         "divider: onyxia instance specific features":
-            "Onyxia-instanssin erityisominaisuudet"
+            "Onyxia-instanssin erityisominaisuudet",
+        "dataExplorer": "Data Explorer",
+        "sqlOlapShell": "SQL OLAP-kuori"
     },
     "Page404": {
         "not found": "Sivua ei löydy"
@@ -499,7 +501,11 @@ Tutustu vapaasti ja ota hallintaan Kubernetes-julkaisusi!
         "friendly name": "Käyttäjäystävällinen nimi",
         "launch": "Käynnistä",
         "cancel": "Peruuta",
-        "copy url helper text": "Kopioi URL-osoite palauttaaksesi tämän konfiguraation",
+        "copy auto launch url": "Kopioi automaattisen käynnistyksen URL",
+        "copy auto launch url helper": ({
+            chartName
+        }) => `Kopioi URL, jonka avulla tämän Onyxia-instanssin käyttäjä voi 
+            käynnistää ${chartName} tässä konfiguraatiossa omassa Namespace:ssaan`,
         "share the service": "Jaa palvelu",
         "share the service - explain": "Tee palvelu saataville ryhmän jäsenille",
         "restore all default": "Palauta oletuskonfiguraatiot",
@@ -526,7 +532,8 @@ Tutustu vapaasti ja ota hallintaan Kubernetes-julkaisusi!
                 </MuiLink>
             </>
         ),
-        "save changes": "Tallenna muutokset"
+        "save changes": "Tallenna muutokset",
+        "copied to clipboard": "Kopioitu leikepöydälle!"
     },
     "LauncherConfigurationCard": {
         "global config": "Yleinen konfiguraatio",
@@ -610,6 +617,32 @@ Tutustu vapaasti ja ota hallintaan Kubernetes-julkaisusi!
     "NoRunningService": {
         "launch one": "Käynnistä palvelu",
         "no services running": "Sinulla ei ole käynnissä olevia palveluita"
+    },
+    "DataExplorer": {
+        "page header title": "Data Explorer",
+        "page header help title":
+            "Esikatsele Parquet- ja CSV-tiedostoja suoraan selaimessasi!",
+        "page header help content": ({ demoParquetFileLink }) => (
+            <>
+                Syötä vain <code>https://</code> tai <code>s3://</code> URL tiedostoon
+                päästäksesi esikatseluun.
+                <br />
+                Tiedostoa ei ladata kokonaan; sen sisältö virtaa, kun navigoit sivujen
+                läpi.
+                <br />
+                Voit jakaa pysyvän linkin tiedostoon tai jopa tiettyyn tiedoston riviin
+                kopioimalla URL:n osoitepalkista.
+                <br />
+                Etkö ole varma, mistä aloittaa? Kokeile tätä{" "}
+                <MuiLink {...demoParquetFileLink}>demotiedostoa</MuiLink>!
+            </>
+        ),
+        "column": "sarake",
+        "density": "tiheys",
+        "download file": "lataa tiedosto"
+    },
+    "UrlInput": {
+        "load": "Lataa"
     },
     "CommandBar": {
         "ok": "ok"
@@ -697,5 +730,9 @@ Tutustu vapaasti ja ota hallintaan Kubernetes-julkaisusi!
                     return "# vuoden kuluttua";
             }
         }
+    },
+    "CopyToClipboardIconButton": {
+        "copied to clipboard": "Kopioitu!",
+        "copy to clipboard": "Kopioi leikepöydälle"
     }
 };

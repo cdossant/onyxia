@@ -1,18 +1,17 @@
-import type { Thunks } from "../core";
-import type { PayloadAction } from "@reduxjs/toolkit";
-import { createSlice } from "@reduxjs/toolkit";
 import { id } from "tsafe/id";
-import type { State as RootState } from "../core";
-import { createSelector } from "@reduxjs/toolkit";
+import type { State as RootState, Thunks } from "core/bootstrap";
 import * as projectConfigs from "./projectConfigs";
 import * as deploymentRegion from "./deploymentRegion";
 import { parseUrl } from "core/tools/parseUrl";
 import { assert } from "tsafe/assert";
 import * as userAuthentication from "./userAuthentication";
 import { createOidcOrFallback } from "core/adapters/oidc/utils/createOidcOrFallback";
-import { createUsecaseContextApi } from "redux-clean-architecture";
+import {
+    createUsecaseActions,
+    createUsecaseContextApi,
+    createSelector
+} from "redux-clean-architecture";
 import type { Oidc } from "core/ports/Oidc";
-import { symToStr } from "tsafe/symToStr";
 
 type State = State.NotRefreshed | State.Ready;
 
@@ -38,7 +37,7 @@ namespace State {
 
 export const name = "k8sCredentials";
 
-export const { reducer, actions } = createSlice({
+export const { reducer, actions } = createUsecaseActions({
     name,
     "initialState": id<State>(
         id<State.NotRefreshed>({
@@ -54,14 +53,16 @@ export const { reducer, actions } = createSlice({
             _state,
             {
                 payload
-            }: PayloadAction<{
-                idpIssuerUrl: string;
-                clientId: string;
-                refreshToken: string;
-                idToken: string;
-                user: string;
-                expirationTime: number;
-            }>
+            }: {
+                payload: {
+                    idpIssuerUrl: string;
+                    clientId: string;
+                    refreshToken: string;
+                    idToken: string;
+                    user: string;
+                    expirationTime: number;
+                };
+            }
         ) => {
             const {
                 idpIssuerUrl,
@@ -105,9 +106,9 @@ export const thunks = {
     "refresh":
         () =>
         async (...args) => {
-            const [dispatch, getState, extraArg] = args;
+            const [dispatch, getState, rootContext] = args;
 
-            const { oidc } = extraArg;
+            const { oidc } = rootContext;
 
             if (getState().s3Credentials.isRefreshing) {
                 return;
@@ -123,7 +124,7 @@ export const thunks = {
 
             assert(oidc.isUserLoggedIn);
 
-            const context = getContext(extraArg);
+            const context = getContext(rootContext);
 
             let { kubernetesOidcClient } = context;
 
@@ -164,7 +165,7 @@ const { getContext } = createUsecaseContextApi<{
 
 export const selectors = (() => {
     const readyState = (rootState: RootState): State.Ready | undefined => {
-        const state = rootState.k8sCredentials;
+        const state = rootState[name];
         switch (state.stateDescription) {
             case "ready":
                 return state;
@@ -222,50 +223,33 @@ export const selectors = (() => {
         }
     );
 
-    const wrap = createSelector(
+    const main = createSelector(
         readyState,
         clusterUrl,
         namespace,
         shellScript,
         (state, clusterUrl, namespace, shellScript) => {
-            const common = {
-                clusterUrl,
-                namespace
-            };
-
-            let idpIssuerUrl: string | undefined = undefined;
-            let clientId: string | undefined = undefined;
-            let refreshToken: string | undefined = undefined;
-            let idToken: string | undefined = undefined;
-            let expirationTime: number | undefined = undefined;
-            let isRefreshing: boolean | undefined = undefined;
-
             if (state === undefined) {
                 return {
                     "isReady": false as const,
-                    ...common,
-                    [symToStr({ idpIssuerUrl })]: undefined,
-                    [symToStr({ clientId })]: undefined,
-                    [symToStr({ refreshToken })]: undefined,
-                    [symToStr({ idToken })]: undefined,
-                    [symToStr({ expirationTime })]: undefined,
-                    [symToStr({ isRefreshing })]: undefined,
-                    [symToStr({ shellScript })]: undefined
+                    clusterUrl,
+                    namespace
                 };
             }
 
             assert(shellScript !== undefined);
 
-            idpIssuerUrl = state.idpIssuerUrl;
-            clientId = state.clientId;
-            refreshToken = state.refreshToken;
-            idToken = state.idToken;
-            expirationTime = state.expirationTime;
-            isRefreshing = state.isRefreshing;
+            const idpIssuerUrl = state.idpIssuerUrl;
+            const clientId = state.clientId;
+            const refreshToken = state.refreshToken;
+            const idToken = state.idToken;
+            const expirationTime = state.expirationTime;
+            const isRefreshing = state.isRefreshing;
 
             return {
                 "isReady": true as const,
-                ...common,
+                clusterUrl,
+                namespace,
                 idpIssuerUrl,
                 clientId,
                 refreshToken,
@@ -278,6 +262,6 @@ export const selectors = (() => {
     );
 
     return {
-        wrap
+        main
     };
 })();

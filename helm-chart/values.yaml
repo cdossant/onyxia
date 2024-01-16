@@ -33,7 +33,7 @@ web:
   replicaCount: 1
   image:
     repository: inseefrlab/onyxia-web
-    tag: 3.7.1
+    tag: 4.12.3
     pullPolicy: IfNotPresent
 
   ## Pod priority settings
@@ -56,17 +56,10 @@ web:
     type: ClusterIP
     port: 80
   resources:
-    {}
-    # We usually recommend not to specify default resources and to leave this as a conscious
-    # choice for the user. This also increases chances charts run on environments with little
-    # resources, such as Minikube. If you do want to specify resources, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
+    #limits:
+    requests:
+      cpu: 200m
+      memory: 128Mi
   extraVolumes: []
   extraVolumeMounts: []
   nodeSelector: {}
@@ -89,7 +82,7 @@ api:
   replicaCount: 1
   image:
     repository: inseefrlab/onyxia-api
-    tag: v1.1.0
+    tag: v1.4.0
     pullPolicy: IfNotPresent
   contextPath: /api
 
@@ -113,17 +106,10 @@ api:
     type: ClusterIP
     port: 80
   resources:
-    {}
-    # We usually recommend not to specify default resources and to leave this as a conscious
-    # choice for the user. This also increases chances charts run on environments with little
-    # resources, such as Minikube. If you do want to specify resources, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
+    #limits:
+    requests:
+      cpu: 1
+      memory: 1Gi
   extraVolumes: []
   extraVolumeMounts: []
   nodeSelector: {}

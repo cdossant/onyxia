@@ -14,7 +14,6 @@ import { ReactComponent as AgentconnectBtnPrincipal } from "ui/assets/svg/agentc
 import { ReactComponent as AgentconnectBtnPrincipalHover } from "ui/assets/svg/agentconnect-btn-principal-hover.svg";
 import { ReactComponent as AgentconnectBtnAlternatif } from "ui/assets/svg/agentconnect-btn-alternatif.svg";
 import { ReactComponent as AgentconnectBtnAlternatifHover } from "ui/assets/svg/agentconnect-btn-alternatif-hover.svg";
-import { useIsDarkModeEnabled } from "onyxia-ui";
 
 export default function Login(
     props: PageProps<Extract<KcContext, { pageId: "login.ftl" }>, I18n>
@@ -245,11 +244,9 @@ const { AgentConnectButton } = (() => {
 
         const [isMouseHover, setIsMouseHover] = useState(false);
 
-        const { classes, cx } = useStyles();
+        const { classes, cx, theme } = useStyles();
 
-        const { isDarkModeEnabled } = useIsDarkModeEnabled();
-
-        const AgentConnectSvg = isDarkModeEnabled
+        const AgentConnectSvg = theme.isDarkModeEnabled
             ? isMouseHover
                 ? AgentconnectBtnAlternatifHover
                 : AgentconnectBtnAlternatif

@@ -14,6 +14,8 @@ import * as s3Credentials from "./s3Credentials";
 import * as k8sCredentials from "./k8sCredentials";
 import * as vaultCredentials from "./vaultCredentials";
 import * as userAccountManagement from "./userAccountManagement";
+import * as sqlOlapShell from "./sqlOlapShell";
+import * as dataExplorer from "./dataExplorer";
 
 export const usecases = {
     catalog,
@@ -31,5 +33,7 @@ export const usecases = {
     s3Credentials,
     k8sCredentials,
     vaultCredentials,
-    userAccountManagement
+    userAccountManagement,
+    sqlOlapShell,
+    dataExplorer
 };

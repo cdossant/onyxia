@@ -290,7 +290,9 @@ export const translations: Translations<"zh-CN"> = {
         "myFiles": "我的文档",
         "divider: services features": "服务功能",
         "divider: external services features": "外部服务功能",
-        "divider: onyxia instance specific features": "Onyxia实例特定功能"
+        "divider: onyxia instance specific features": "Onyxia实例特定功能",
+        "dataExplorer": "数据浏览器",
+        "sqlOlapShell": "SQL OLAP 外壳"
     },
     "Page404": {
         "not found": "网页未找到"
@@ -474,7 +476,11 @@ ${
         "friendly name": "自定义名称",
         "launch": "启动",
         "cancel": "取消",
-        "copy url helper text": "复制 URL 以恢复此配置",
+        "copy auto launch url": "复制自动启动 URL",
+        "copy auto launch url helper": ({
+            chartName
+        }) => `复制 URL，使任何这个 Onyxia 实例的用户都能够
+            在他们的 namespace 中以这种配置启动一个 ${chartName}`,
         "share the service": "分享服务",
         "share the service - explain": "让其他组员可以访问该服务",
         "restore all default": "恢复默认配置",
@@ -499,7 +505,8 @@ ${
                 <MuiLink href={catalogRepositoryUrl}>{catalogName} Helm 仓库</MuiLink>
             </>
         ),
-        "save changes": "保存更改"
+        "save changes": "保存更改",
+        "copied to clipboard": "已复制到剪贴板！"
     },
     "LauncherConfigurationCard": {
         "global config": "全局配置",
@@ -580,6 +587,30 @@ ${
     "NoRunningService": {
         "launch one": "点击来启动此服务",
         "no services running": "You don't have any service running"
+    },
+    "DataExplorer": {
+        "page header title": "数据浏览器",
+        "page header help title": "直接在您的浏览器中预览您的 Parquet 和 CSV 文件！",
+        "page header help content": ({ demoParquetFileLink }) => (
+            <>
+                只需输入数据文件的 <code>https://</code> 或 <code>s3://</code> URL
+                即可预览。
+                <br />
+                文件不会完全下载；您在翻阅页面时，其内容会实时流式传输。
+                <br />
+                您可以复制地址栏中的
+                URL，分享文件的永久链接，甚至是文件中某个特定行的链接。
+                <br />
+                不知道从哪里开始？尝试这个{" "}
+                <MuiLink {...demoParquetFileLink}>演示文件</MuiLink>！
+            </>
+        ),
+        "column": "列",
+        "density": "密度",
+        "download file": "下载文件"
+    },
+    "UrlInput": {
+        "load": "加载"
     },
     "CommandBar": {
         "ok": "是"
@@ -667,6 +698,10 @@ ${
                     return "# 年后";
             }
         }
+    },
+    "CopyToClipboardIconButton": {
+        "copied to clipboard": "已复制！",
+        "copy to clipboard": "复制到剪贴板"
     }
     /* spell-checker: enable */
 };

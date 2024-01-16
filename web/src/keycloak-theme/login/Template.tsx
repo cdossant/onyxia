@@ -19,21 +19,18 @@ import { symToStr } from "tsafe/symToStr";
 import { BrandHeaderSection } from "ui/shared/BrandHeaderSection";
 import { getReferrerUrl } from "keycloak-theme/login/tools/getReferrerUrl";
 import { useConst } from "powerhooks/useConst";
-import { useResolveThemedAssetUrl } from "onyxia-ui";
 import { env } from "env-parsed";
+import { useThemedImageUrl } from "onyxia-ui/ThemedImage";
 
 type TemplateProps = GenericTemplateProps<KcContext, I18n>;
 
 export default function Template(props: TemplateProps) {
     const { kcContext, doUseDefaultCss, classes: classes_props, children } = props;
 
-    const { resolveThemedAssetUrl } = useResolveThemedAssetUrl();
+    const backgroundUrl = useThemedImageUrl(env.BACKGROUND_ASSET);
 
     const { classes, cx } = useStyles({
-        "backgroundUrl":
-            env.BACKGROUND_ASSET === undefined
-                ? undefined
-                : resolveThemedAssetUrl(env.BACKGROUND_ASSET)
+        backgroundUrl
     });
 
     const { getClassName } = useGetClassName({
@@ -126,7 +123,7 @@ const { Header } = (() => {
         return (
             <header className={cx(classes.root, className)}>
                 <BrandHeaderSection
-                    doShowOnyxia={true}
+                    doShowOnyxia={false}
                     link={{
                         "href": referrerUrl ?? "#",
                         "onClick": () => {}
@@ -204,7 +201,16 @@ const { Page } = (() => {
                             <IconButton
                                 icon={CloseIcon}
                                 tabIndex={-1}
-                                onClick={() => window.history.back()}
+                                onClick={() => {
+                                    const referrerUrl = getReferrerUrl();
+
+                                    if (referrerUrl === undefined) {
+                                        window.history.back();
+                                        return;
+                                    }
+
+                                    window.location.href = referrerUrl;
+                                }}
                             />
                         </div>
                     )}
